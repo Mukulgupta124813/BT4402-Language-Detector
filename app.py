@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
-from sklearn.feature_extraction.text import CountVectorizer
+# from flask import Flask, request, jsonify
+# from sklearn.feature_extraction.text import CountVectorizer
+import streamlit as st
 import pickle
 import warnings
 warnings.filterwarnings("ignore")
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 codel = {"English":0,
 "French":1,
@@ -36,12 +37,26 @@ with open('MultinomialNB.sav', 'rb') as handle:
 # x = count.transform([input])
 # print(getcodel(language_detect_model.predict(x)))
 
-@app.route('/', methods=['GET','POST'])
-def Detector():
-    input = request.args.get('Input')
-    x = count.transform([input])
-    res = {'Data': input, 'Output':getcodel(language_detect_model.predict(x))}
-    return jsonify(res)
+# @app.route('/', methods=['GET','POST'])
+# def Detector():
+#     input = request.args.get('Input')
+#     x = count.transform([input])
+#     res = {'Data': input, 'Output':getcodel(language_detect_model.predict(x))}
+#     return jsonify(res)
 
-if __name__ == '__main__':
-   app.run(host='0.0.0.0')
+# if __name__ == '__main__':
+#    app.run(host='0.0.0.0')
+
+
+def main():
+    st.title("Language Detector")
+    input = st.text_input("Enter your text:")
+    x = count.transform([input])
+    if input:
+        res = getcodel(language_detect_model.predict(x))
+        st.write("Detected Language:",res)
+    else:
+        st.write("Detected Language:")
+
+if __name__ == "__main__":
+    main()
